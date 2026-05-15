@@ -1,0 +1,52 @@
+name: uangky
+description: "UangKy — catatan keuangan multi-buku (Flutter)."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+  intl: ^0.20.2
+  shared_preferences: ^2.5.3
+  fl_chart: ^0.70.2
+  share_plus: ^10.1.4
+  url_launcher: ^6.3.1
+  flutter_local_notifications: ^21.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
+
+flutter:
+  uses-material-design: true
+  assets:
+    - asset/UangkyLogo.png
+    - asset/UangkyTransparanLogo.png
+
+# Ikon launcher Android/iOS dari logo (bukan transparan) — jalankan: dart run flutter_launcher_icons
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: asset/UangkyLogo.png
+  adaptive_icon_background: "#FFCC99"
+  adaptive_icon_foreground: asset/UangkyLogo.png
+
+# Splash native saat engine start — jalankan: dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#F6F4F1"
+  image: asset/UangkyTransparanLogo.png
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: "#F6F4F1"
+    image: asset/UangkyTransparanLogo.png
