@@ -104,8 +104,4 @@ flutter run
 - Edit & hapus **buku** dari UI (saat ini hanya tambah).
 - Alarm di jam pasti per jadwal (perlu `timezone` + izin exact alarm di Android).
 
----
 
-## Lisensi / kontributor
-
-Sesuaikan dengan kebijakan repositori kamu.
