@@ -42,13 +42,7 @@ Urutan saat user memakai app:
 
 ---
 
-## Kenapa tidak pakai `Timer.periodic` untuk jadwal?
 
-Jadwal otomatis dicek saat **frame pertama shell** dan saat lifecycle **`resumed`** (`shell_screen.dart` → `checkDueSchedules()`), bukan polling timer (hemat baterai, perilaku stabil).
-
-**Pelengkap:** pengingat **notifikasi lokal harian** (opsional di Pengaturan, Android/iOS) mengingatkan user membuka app; eksekusi jadwal tetap saat app jalan / resume.
-
----
 
 ## Struktur folder (`lib/`)
 
