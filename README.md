@@ -98,10 +98,4 @@ flutter run
 
 ---
 
-## Next step (opsional)
-
-- Push notification / server sinkron.
-- Edit & hapus **buku** dari UI (saat ini hanya tambah).
-- Alarm di jam pasti per jadwal (perlu `timezone` + izin exact alarm di Android).
-
 
