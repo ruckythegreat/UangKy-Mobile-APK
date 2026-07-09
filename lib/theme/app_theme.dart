@@ -8,15 +8,16 @@ ThemeData buildUangKyTheme() {
   final base = ThemeData(
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF2D2A26),
+      seedColor: AppColors.inkPrimary,
       brightness: Brightness.light,
-      primary: const Color(0xFF1C1917),
+      primary: AppColors.inkPrimary,
       onPrimary: peach,
       surface: AppColors.scaffold,
-      onSurface: const Color(0xFF1C1917),
+      onSurface: AppColors.inkPrimary,
+      onSurfaceVariant: AppColors.inkMuted,
       surfaceContainerHighest: AppColors.surfaceMuted,
       outlineVariant: AppColors.borderSoft,
-      secondary: const Color(0xFF44403C),
+      secondary: AppColors.inkSecondary,
       error: AppColors.expenseRed,
     ),
   );
@@ -26,7 +27,7 @@ ThemeData buildUangKyTheme() {
       backgroundColor: Colors.transparent,
       elevation: 0,
       scrolledUnderElevation: 0,
-      foregroundColor: Color(0xFF1C1917),
+      foregroundColor: AppColors.inkPrimary,
       centerTitle: false,
     ),
     cardTheme: CardThemeData(
@@ -52,12 +53,20 @@ ThemeData buildUangKyTheme() {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF57534E), width: 1.5),
+        borderSide: const BorderSide(color: AppColors.inkFocus, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: AppColors.expenseRed),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: AppColors.expenseRed, width: 1.5),
       ),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: const Color(0xFF1C1917),
+        backgroundColor: AppColors.inkPrimary,
         foregroundColor: peach,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -73,15 +82,15 @@ ThemeData buildUangKyTheme() {
           fontSize: 11,
           fontWeight: FontWeight.w600,
           color: states.contains(WidgetState.selected)
-              ? const Color(0xFF1C1917)
-              : const Color(0xFF78716C),
+              ? AppColors.inkPrimary
+              : AppColors.inkMuted,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return IconThemeData(
           color: states.contains(WidgetState.selected)
-              ? const Color(0xFF1C1917)
-              : const Color(0xFF78716C),
+              ? AppColors.inkPrimary
+              : AppColors.inkMuted,
           size: 22,
         );
       }),
@@ -91,7 +100,7 @@ ThemeData buildUangKyTheme() {
       minVerticalPadding: 8,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: Color(0xFF1C1917),
+      color: AppColors.inkPrimary,
     ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,

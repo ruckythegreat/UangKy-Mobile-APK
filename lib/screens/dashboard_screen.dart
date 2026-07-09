@@ -111,7 +111,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   border: Border.all(color: AppColors.borderSoft.withValues(alpha: 0.85)),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF1C1917).withValues(alpha: 0.06),
+                      color: AppColors.inkPrimary.withValues(alpha: 0.06),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
@@ -132,13 +132,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.3,
-                            color: const Color(0xFF1C1917),
+                            color: AppColors.inkPrimary,
                           ),
                     ),
                     Text(
                       'Ringkasan keuanganmu',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: const Color(0xFF78716C),
+                            color: AppColors.inkMuted,
                           ),
                     ),
                   ],
@@ -158,7 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 10),
           DecoratedBox(
             decoration: BoxDecoration(
-              color: const Color(0xFF1C1917),
+              color: AppColors.inkPrimary,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Padding(
@@ -187,11 +187,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     width: double.infinity,
                     child: FilledButton.icon(
                       onPressed: widget.onAddTransaction,
-                      icon: const Icon(Icons.add, color: Color(0xFF1C1917)),
+                      icon: const Icon(Icons.add, color: AppColors.inkPrimary),
                       label: const Text(
                         'Tambah catatan',
                         style: TextStyle(
-                          color: Color(0xFF1C1917),
+                          color: AppColors.inkPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -209,7 +209,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             'Buku',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF44403C),
+                  color: AppColors.inkSecondary,
                 ),
           ),
           ...fin.ledgers.map((ledger) {
@@ -247,7 +247,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ledger.type,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.black.withValues(alpha: 0.55),
+                                  color: AppColors.inkMuted,
                                 ),
                               ),
                             ],
@@ -269,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             'Arus kas',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF44403C),
+                  color: AppColors.inkSecondary,
                 ),
           ),
           SegmentedButton<int>(
@@ -394,7 +394,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Text(
                   'Net harian (hijau positif, merah negatif) — sentuh batang untuk nominal',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 11, color: Colors.black.withValues(alpha: 0.65)),
+                  style: const TextStyle(fontSize: 11, color: AppColors.inkMuted),
                 ),
               ),
             ],
@@ -407,7 +407,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   'Transaksi terakhir',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF44403C),
+                        color: AppColors.inkSecondary,
                       ),
                 ),
               ),
@@ -457,7 +457,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: Text(
                       'Ketuk baris untuk ubah. Jadwal & pengingat: menu pengaturan (ikon roda).',
-                      style: TextStyle(fontSize: 12, color: Colors.black.withValues(alpha: 0.65)),
+                      style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
                     ),
                   ),
                 ],

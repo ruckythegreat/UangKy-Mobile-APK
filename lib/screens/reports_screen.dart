@@ -87,13 +87,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   'Laporan',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF1C1917),
+                        color: AppColors.inkPrimary,
                       ),
                 ),
                 Text(
                   'Filter bulan & buku, lalu bagikan CSV',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF78716C),
+                        color: AppColors.inkMuted,
                       ),
                 ),
                 const SizedBox(height: 14),
@@ -107,7 +107,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           'Filter',
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: const Color(0xFF44403C),
+                                color: AppColors.inkSecondary,
                               ),
                         ),
                         const SizedBox(height: 10),
@@ -204,7 +204,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 child: Center(
                   child: Text(
                     'Tidak ada transaksi untuk filter ini',
-                    style: TextStyle(color: Colors.black.withValues(alpha: 0.55)),
+                    style: const TextStyle(color: AppColors.inkMuted),
                   ),
                 ),
               ),
@@ -256,7 +256,9 @@ class _StatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Semantics(
+      label: '$label: $value',
+      child: Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: bg,
@@ -268,17 +270,18 @@ class _StatTile extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 10, color: fg.withValues(alpha: 0.75)),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: fg),
           ),
           const SizedBox(height: 4),
           Text(
             value,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: fg),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: fg),
           ),
         ],
       ),
+    ),
     );
   }
 }

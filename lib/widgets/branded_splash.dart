@@ -33,7 +33,7 @@ class BrandedSplash extends StatelessWidget {
                     borderRadius: BorderRadius.circular(28),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF1C1917).withValues(alpha: 0.12),
+                        color: AppColors.inkPrimary.withValues(alpha: 0.12),
                         blurRadius: 32,
                         offset: const Offset(0, 14),
                       ),
@@ -56,14 +56,14 @@ class BrandedSplash extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5,
-                        color: const Color(0xFF1C1917),
+                        color: AppColors.inkPrimary,
                       ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Catatan keuangan ringan',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: const Color(0xFF57534E),
+                        color: AppColors.inkMuted,
                         fontWeight: FontWeight.w500,
                       ),
                 ),
@@ -73,7 +73,7 @@ class BrandedSplash extends StatelessWidget {
                   height: 40,
                   child: CircularProgressIndicator(
                     strokeWidth: 3,
-                    color: Color(0xFF1C1917),
+                    color: AppColors.inkPrimary,
                   ),
                 ),
               ],

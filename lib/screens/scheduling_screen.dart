@@ -28,6 +28,9 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
   String _interval = 'monthly';
   int _dayOfWeek = 1;
   int _dayOfMonth = 1;
+  String? _nameError;
+  String? _amountError;
+  String? _categoryError;
 
   @override
   void initState() {
@@ -57,16 +60,20 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
 
   Future<void> _save() async {
     final fin = context.read<FinanceProvider>();
+    final name = _nameCtrl.text.trim();
     final amount = double.tryParse(_amountCtrl.text.replaceAll(',', '.')) ?? 0;
-    if (_nameCtrl.text.trim().isEmpty || amount <= 0 || _category.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mohon lengkapi nama, nominal, dan kategori')),
-      );
-      return;
-    }
+    final nameError = name.isEmpty ? 'Masukkan nama jadwal' : null;
+    final amountError = amount <= 0 ? 'Masukkan nominal lebih dari 0' : null;
+    final categoryError = _category.isEmpty ? 'Pilih kategori' : null;
+    setState(() {
+      _nameError = nameError;
+      _amountError = amountError;
+      _categoryError = categoryError;
+    });
+    if (nameError != null || amountError != null || categoryError != null) return;
     final s = Schedule(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: _nameCtrl.text.trim(),
+      name: name,
       ledgerId: _ledgerId,
       amount: amount,
       type: _type,
@@ -87,6 +94,9 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
       _dayOfWeek = 1;
       _dayOfMonth = 1;
       _ledgerId = fin.ledgers.isNotEmpty ? fin.ledgers.first.id : '';
+      _nameError = null;
+      _amountError = null;
+      _categoryError = null;
     });
   }
 
@@ -100,13 +110,13 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
           'Jadwal otomatis',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF1C1917),
+                color: AppColors.inkPrimary,
               ),
         ),
         Text(
           'Harian, mingguan, atau bulanan — dijalankan saat app aktif',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: const Color(0xFF78716C),
+                color: AppColors.inkMuted,
               ),
         ),
         const SizedBox(height: 16),
@@ -139,7 +149,13 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                   ),
                   TextField(
                     controller: _nameCtrl,
-                    decoration: const InputDecoration(labelText: 'Nama jadwal'),
+                    decoration: InputDecoration(
+                      labelText: 'Nama jadwal',
+                      errorText: _nameError,
+                    ),
+                    onChanged: (_) {
+                      if (_nameError != null) setState(() => _nameError = null);
+                    },
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
@@ -183,16 +199,29 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                   TextField(
                     controller: _amountCtrl,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: 'Nominal'),
+                    decoration: InputDecoration(
+                      labelText: 'Nominal',
+                      errorText: _amountError,
+                    ),
+                    onChanged: (_) {
+                      if (_amountError != null) setState(() => _amountError = null);
+                    },
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
                     value: _category.isEmpty ? null : _category,
                     hint: const Text('Kategori'),
+                    decoration: InputDecoration(
+                      labelText: 'Kategori',
+                      errorText: _categoryError,
+                    ),
                     items: [
                       for (final c in _categories) DropdownMenuItem(value: c, child: Text(c)),
                     ],
-                    onChanged: (v) => setState(() => _category = v ?? ''),
+                    onChanged: (v) => setState(() {
+                      _category = v ?? '';
+                      _categoryError = null;
+                    }),
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
@@ -246,7 +275,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
           'Daftar jadwal',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: const Color(0xFF44403C),
+                color: AppColors.inkSecondary,
               ),
         ),
         const SizedBox(height: 8),
@@ -257,7 +286,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
               child: Center(
                 child: Text(
                   'Belum ada jadwal otomatis',
-                  style: TextStyle(color: Colors.black.withValues(alpha: 0.55)),
+                  style: const TextStyle(color: AppColors.inkMuted),
                 ),
               ),
             ),
@@ -287,9 +316,9 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                                 ),
                                 Text(
                                   ledger?.name ?? '-',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
-                                    color: Colors.black.withValues(alpha: 0.55),
+                                    color: AppColors.inkMuted,
                                   ),
                                 ),
                               ],
@@ -307,7 +336,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                       const SizedBox(height: 6),
                       Text(
                         '${_intervalLabel(schedule)} • ${schedule.category}',
-                        style: TextStyle(fontSize: 12, color: Colors.black.withValues(alpha: 0.65)),
+                        style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -325,10 +354,12 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          FilledButton(
+                          Tooltip(
+                            message: 'Hapus jadwal',
+                            child: FilledButton(
                             style: FilledButton.styleFrom(
                               backgroundColor: AppColors.expenseRed,
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                             ),
                             onPressed: () async {
                               final ok = await showDialog<bool>(
@@ -347,6 +378,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                             },
                             child: const Icon(Icons.delete_outline, color: Colors.white),
                           ),
+                          ),
                         ],
                       ),
                       if (schedule.lastExecuted != null)
@@ -354,7 +386,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             'Terakhir dijalankan: ${schedule.lastExecuted}',
-                            style: TextStyle(fontSize: 10, color: Colors.black.withValues(alpha: 0.45)),
+                            style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
                           ),
                         ),
                     ],
@@ -370,7 +402,7 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
             child: Text(
               'Jadwal dijalankan saat aplikasi dibuka atau kembali dari latar. '
               'Untuk tagihan sangat ketat, buka aplikasi sekali sehari atau gunakan pengingat sistem.',
-              style: TextStyle(fontSize: 12, color: Colors.black.withValues(alpha: 0.7)),
+              style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
             ),
           ),
         ),
@@ -407,7 +439,7 @@ class _MiniType extends StatelessWidget {
               label,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: selected ? Colors.white : Colors.black,
+                color: selected ? Colors.white : AppColors.inkPrimary,
               ),
             ),
           ),

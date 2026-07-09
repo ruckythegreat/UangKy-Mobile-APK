@@ -30,6 +30,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   String _method = 'cash';
   DateTime _date = DateTime.now();
   final _notesCtrl = TextEditingController();
+  String? _amountError;
+  String? _categoryError;
 
   bool get _isEdit => widget.existing != null;
 
@@ -89,12 +91,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   Future<void> _submit() async {
     final amount = double.tryParse(_amountCtrl.text.replaceAll(',', '.')) ?? 0;
-    if (amount <= 0 || _category.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mohon lengkapi nominal dan kategori')),
-      );
-      return;
-    }
+    final amountError = amount <= 0 ? 'Masukkan nominal lebih dari 0' : null;
+    final categoryError = _category.isEmpty ? 'Pilih kategori' : null;
+    setState(() {
+      _amountError = amountError;
+      _categoryError = categoryError;
+    });
+    if (amountError != null || categoryError != null) return;
     final ds =
         '${_date.year.toString().padLeft(4, '0')}-${_date.month.toString().padLeft(2, '0')}-${_date.day.toString().padLeft(2, '0')}';
     final fin = context.read<FinanceProvider>();
@@ -162,6 +165,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             child: Text(
               'Belum ada buku. Buka tab Buku lalu tambah buku baru.',
               textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.inkMuted),
             ),
           ),
         ),
@@ -256,7 +260,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           TextField(
             controller: _amountCtrl,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            decoration: const InputDecoration(hintText: 'Masukkan nominal'),
+            decoration: InputDecoration(
+              hintText: 'Masukkan nominal',
+              errorText: _amountError,
+            ),
+            onChanged: (_) {
+              if (_amountError != null) setState(() => _amountError = null);
+            },
           ),
           const SizedBox(height: 16),
           Text(
@@ -270,10 +280,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           DropdownButtonFormField<String>(
             value: _category.isEmpty ? null : _category,
             hint: const Text('Pilih kategori'),
+            decoration: InputDecoration(errorText: _categoryError),
             items: [
               for (final c in _categories) DropdownMenuItem(value: c, child: Text(c)),
             ],
-            onChanged: (v) => setState(() => _category = v ?? ''),
+            onChanged: (v) => setState(() {
+              _category = v ?? '';
+              _categoryError = null;
+            }),
           ),
           const SizedBox(height: 16),
           Text(
@@ -380,7 +394,7 @@ class _TypeChip extends StatelessWidget {
               '$emoji $label',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: selected ? Colors.white : Colors.black,
+                color: selected ? Colors.white : AppColors.inkPrimary,
               ),
             ),
           ),
@@ -406,7 +420,7 @@ class _MethodChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: selected ? Colors.black : AppColors.surfaceGlass,
+      color: selected ? AppColors.inkPrimary : AppColors.surfaceGlass,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
@@ -418,7 +432,7 @@ class _MethodChip extends StatelessWidget {
               '$emoji $label',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: selected ? AppColors.peach : Colors.black,
+                color: selected ? AppColors.peach : AppColors.inkPrimary,
               ),
             ),
           ),

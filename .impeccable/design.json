@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-07T02:22:00.000Z",
+  "title": "Design System: UangKy",
+  "extensions": {
+    "colorMeta": {
+      "peach": {
+        "role": "primary",
+        "displayName": "Warm Peach Accent",
+        "canonical": "oklch(0.87 0.08 65)",
+        "tonalRamp": [
+          "oklch(0.25 0.04 65)",
+          "oklch(0.35 0.05 65)",
+          "oklch(0.45 0.06 65)",
+          "oklch(0.55 0.07 65)",
+          "oklch(0.65 0.07 65)",
+          "oklch(0.75 0.08 65)",
+          "oklch(0.87 0.08 65)",
+          "oklch(0.95 0.04 65)"
+        ]
+      },
+      "ink-primary": {
+        "role": "primary",
+        "displayName": "Ledger Ink",
+        "canonical": "oklch(0.21 0.01 60)",
+        "tonalRamp": [
+          "oklch(0.12 0.01 60)",
+          "oklch(0.17 0.01 60)",
+          "oklch(0.21 0.01 60)",
+          "oklch(0.30 0.01 60)",
+          "oklch(0.40 0.01 60)",
+          "oklch(0.50 0.01 60)",
+          "oklch(0.65 0.01 60)",
+          "oklch(0.80 0.005 60)"
+        ]
+      },
+      "ink-secondary": {
+        "role": "secondary",
+        "displayName": "Stone Secondary",
+        "canonical": "oklch(0.35 0.01 60)",
+        "tonalRamp": [
+          "oklch(0.15 0.01 60)",
+          "oklch(0.22 0.01 60)",
+          "oklch(0.30 0.01 60)",
+          "oklch(0.35 0.01 60)",
+          "oklch(0.45 0.01 60)",
+          "oklch(0.55 0.01 60)",
+          "oklch(0.70 0.005 60)",
+          "oklch(0.85 0.005 60)"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Warm Stone Muted",
+        "canonical": "oklch(0.47 0.01 60)",
+        "tonalRamp": [
+          "oklch(0.20 0.01 60)",
+          "oklch(0.30 0.01 60)",
+          "oklch(0.40 0.01 60)",
+          "oklch(0.50 0.01 60)",
+          "oklch(0.55 0.01 60)",
+          "oklch(0.65 0.01 60)",
+          "oklch(0.75 0.005 60)",
+          "oklch(0.90 0.005 60)"
+        ]
+      },
+      "scaffold": {
+        "role": "neutral",
+        "displayName": "Off-White Linen",
+        "canonical": "oklch(0.96 0.005 80)",
+        "tonalRamp": [
+          "oklch(0.20 0.005 80)",
+          "oklch(0.35 0.005 80)",
+          "oklch(0.50 0.005 80)",
+          "oklch(0.65 0.005 80)",
+          "oklch(0.78 0.005 80)",
+          "oklch(0.88 0.005 80)",
+          "oklch(0.96 0.005 80)",
+          "oklch(0.99 0.002 80)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Pure Card",
+        "canonical": "oklch(1.0 0 0)",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.30 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.60 0 0)",
+          "oklch(0.75 0 0)",
+          "oklch(0.88 0 0)",
+          "oklch(0.96 0 0)",
+          "oklch(1.0 0 0)"
+        ]
+      },
+      "income-green": {
+        "role": "tertiary",
+        "displayName": "Income Forest",
+        "canonical": "oklch(0.52 0.14 145)",
+        "tonalRamp": [
+          "oklch(0.20 0.08 145)",
+          "oklch(0.30 0.10 145)",
+          "oklch(0.38 0.12 145)",
+          "oklch(0.45 0.13 145)",
+          "oklch(0.52 0.14 145)",
+          "oklch(0.62 0.12 145)",
+          "oklch(0.75 0.08 145)",
+          "oklch(0.90 0.04 145)"
+        ]
+      },
+      "expense-red": {
+        "role": "tertiary",
+        "displayName": "Expense Brick",
+        "canonical": "oklch(0.48 0.17 25)",
+        "tonalRamp": [
+          "oklch(0.20 0.10 25)",
+          "oklch(0.30 0.13 25)",
+          "oklch(0.38 0.15 25)",
+          "oklch(0.44 0.16 25)",
+          "oklch(0.48 0.17 25)",
+          "oklch(0.58 0.14 25)",
+          "oklch(0.72 0.09 25)",
+          "oklch(0.88 0.04 25)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Splash screen app name only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles across all tabs and pushed routes."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headers within a page."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Subtitles, descriptions, metadata, helper text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, nav labels, axis labels."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default Material state transitions, 150–250ms."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "Instant or crossfade when prefers-reduced-motion is active."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "0px"
+      },
+      {
+        "name": "tablet",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default action — ink fill, peach label. Used for Catat transaksi and form submit.",
+      "html": "<button class=\"ds-btn-primary\">Catat transaksi</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #1C1917; color: #FFCC99; padding: 14px 18px; font-family: Roboto, system-ui, sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 14px; cursor: pointer; transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; } .ds-btn-primary:hover { background: #44403C; } .ds-btn-primary:focus-visible { outline: 2px solid #57534E; outline-offset: 2px; } .ds-btn-primary:active { background: #1C1917; }"
+    },
+    {
+      "name": "Accent Button",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "Inverted polarity — peach fill, ink label. Used inside balance hero card.",
+      "html": "<button class=\"ds-btn-accent\"><svg class=\"ds-icon\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"/><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/></svg> Tambah catatan</button>",
+      "css": ".ds-btn-accent { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #FFCC99; color: #1C1917; padding: 14px 18px; font-family: Roboto, system-ui, sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 14px; cursor: pointer; transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1); width: 100%; } .ds-btn-accent:hover { background: #FFD4A8; } .ds-btn-accent:focus-visible { outline: 2px solid #57534E; outline-offset: 2px; } .ds-icon { flex-shrink: 0; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Flat content container — white fill, soft border, zero elevation.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-label\">Arus kas</div><div class=\"ds-card-body\">Chart area</div></div>",
+      "css": ".ds-card { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.13); border-radius: 14px; padding: 14px 16px; } .ds-card-label { font-family: Roboto, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #44403C; margin-bottom: 8px; } .ds-card-body { font-family: Roboto, system-ui, sans-serif; font-size: 14px; color: #1C1917; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Filled form field with soft border and focus ring via border shift.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\">Nominal</label><input class=\"ds-input\" type=\"text\" placeholder=\"0\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; } .ds-field-label { font-family: Roboto, system-ui, sans-serif; font-size: 11px; font-weight: 800; color: #1C1917; text-transform: uppercase; letter-spacing: 0.02em; } .ds-input { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.13); border-radius: 14px; padding: 14px 16px; font-family: Roboto, system-ui, sans-serif; font-size: 14px; color: #1C1917; outline: none; transition: border-color 0.2s; } .ds-input:focus { border: 1.5px solid #57534E; } .ds-input::placeholder { color: #57534E; }"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "nav-bottom",
+      "description": "Four-tab mobile nav — peach indicator, ink selected, muted unselected.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item ds-nav-item--active\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z\"/></svg><span>Beranda</span></button><button class=\"ds-nav-item\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M4 19.5A2.5 2.5 0 016.5 17H20\"/><path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z\"/></svg><span>Buku</span></button><button class=\"ds-nav-item\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><line x1=\"16\" y1=\"2\" x2=\"16\" y2=\"6\"/><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"6\"/><line x1=\"3\" y1=\"10\" x2=\"21\" y2=\"10\"/></svg><span>Jadwal</span></button><button class=\"ds-nav-item\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"18\" y1=\"20\" x2=\"18\" y2=\"10\"/><line x1=\"12\" y1=\"20\" x2=\"12\" y2=\"4\"/><line x1=\"6\" y1=\"20\" x2=\"6\" y2=\"14\"/></svg><span>Laporan</span></button></nav>",
+      "css": ".ds-nav { display: flex; justify-content: space-around; align-items: center; height: 60px; background: #FFFFFF; border-top: 1px solid rgba(0,0,0,0.08); } .ds-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; cursor: pointer; padding: 8px 12px; border-radius: 14px; color: #57534E; font-family: Roboto, system-ui, sans-serif; font-size: 11px; font-weight: 600; transition: color 0.2s, background 0.2s; } .ds-nav-item--active { color: #1C1917; background: rgba(255,204,153,0.65); } .ds-nav-item:hover:not(.ds-nav-item--active) { color: #44403C; }"
+    },
+    {
+      "name": "Balance Hero",
+      "kind": "custom",
+      "refersTo": "card-default",
+      "description": "Signature ink panel showing total balance — the most prominent data surface on Beranda.",
+      "html": "<div class=\"ds-balance\"><div class=\"ds-balance-label\">Total saldo</div><div class=\"ds-balance-amount\">Rp 1.250.000</div><button class=\"ds-balance-cta\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"/><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/></svg> Tambah catatan</button></div>",
+      "css": ".ds-balance { background: #1C1917; border-radius: 16px; padding: 18px; } .ds-balance-label { font-family: Roboto, system-ui, sans-serif; font-size: 13px; color: rgba(255,204,153,0.88); margin-bottom: 4px; } .ds-balance-amount { font-family: Roboto, system-ui, sans-serif; font-size: 26px; font-weight: 700; color: #FFCC99; margin-bottom: 14px; } .ds-balance-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #FFCC99; color: #1C1917; padding: 14px 18px; font-family: Roboto, system-ui, sans-serif; font-size: 15px; font-weight: 600; border: none; border-radius: 14px; cursor: pointer; transition: background 0.2s; } .ds-balance-cta:hover { background: #FFD4A8; }"
+    },
+    {
+      "name": "Type Toggle",
+      "kind": "chip",
+      "refersTo": "button-accent",
+      "description": "Income/expense selector in transaction form — semantic green/red fills.",
+      "html": "<div class=\"ds-type-toggle\"><button class=\"ds-type-btn ds-type-btn--income\">Pemasukan</button><button class=\"ds-type-btn ds-type-btn--expense ds-type-btn--selected\">Pengeluaran</button></div>",
+      "css": ".ds-type-toggle { display: flex; gap: 8px; } .ds-type-btn { flex: 1; padding: 14px; font-family: Roboto, system-ui, sans-serif; font-size: 14px; font-weight: 700; border: none; border-radius: 16px; cursor: pointer; background: rgba(255,255,255,0.9); color: #1C1917; transition: background 0.2s, color 0.2s; } .ds-type-btn--selected.ds-type-btn--income { background: #15803D; color: #FFFFFF; } .ds-type-btn--selected.ds-type-btn--expense { background: #B91C1C; color: #FFFFFF; } .ds-type-btn:hover:not(.ds-type-btn--selected) { background: #ECE8E3; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Pocket Notebook",
+    "overview": "UangKy should feel like a competent pocket notebook you trust with real money — not a gamified app, not a corporate bank portal, not a SaaS dashboard. The interface disappears into the task: log a transaction, check a balance, scan a chart, move on. Visual personality is sharp and minimal; warmth arrives through the peach accent on deliberate moments (primary actions, nav selection, brand logo), never through decorative scaffolding.",
+    "keyCharacteristics": [
+      "Numbers-first — balances and amounts use the heaviest type weights",
+      "Ink + peach pairing — dark ink structures the UI; peach accents selection and brand",
+      "Tonal flatness — depth via surface steps, not shadow stacks",
+      "Tactile confidence — filled buttons, 14–16px corners, w700–w800 headings",
+      "Material 3 native — system sans, standard navigation and form patterns",
+      "Indonesian copy — direct, precise labels"
+    ],
+    "rules": [
+      {
+        "name": "The Peach Accent Rule",
+        "body": "Peach appears on primary button labels (on ink), nav indicators, balance figures on dark panels, and brand moments. It is forbidden as a page background, gradient wash, or card fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Ink Voice Rule",
+        "body": "Ledger Ink (#1C1917) is the single dark structural color. Do not introduce navy, charcoal gradients, or secondary dark hues.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight-Not-Size Rule",
+        "body": "Emphasis on numbers and headings comes from font weight (w700–w800), not oversized display type. Balance hero maxes at 26px; page titles stay at titleLarge.",
+        "section": "typography"
+      },
+      {
+        "name": "The System Sans Rule",
+        "body": "No custom font imports. Roboto / SF Pro / system-ui only. Display fonts in labels or data are prohibited.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Cards, inputs, and list rows are flat at rest. elevation: 0 everywhere. Depth = surface color step + 1px border.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No-Gradient-Scaffold Rule",
+        "body": "The shell's peach-to-muted gradient wrapper is a known exception. New screens should not add decorative background gradients; the scaffold color alone is sufficient.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use Ledger Ink (#1C1917) for primary actions and structural panels; peach only for accent labels, indicators, and brand moments.",
+      "Do set elevation: 0 on all cards and rely on surface color steps + 1px borders for depth.",
+      "Do render currency amounts at w700–w800; the number is the hero, not the container around it.",
+      "Do pair income/expense colors with text labels for color-blind accessibility.",
+      "Do keep corner radius consistent at 14px (16px for hero panels and type toggles only).",
+      "Do use the full-width Catat transaksi button above the nav bar — never a floating FAB.",
+      "Do respect prefers-reduced-motion: crossfade or instant state changes."
+    ],
+    "donts": [
+      "Don't use generic SaaS finance dashboard patterns: cream/sand body backgrounds, hero-metric cards, gradient accents, eyebrow kickers, identical icon-card grids.",
+      "Don't gamify the UI — no coins, streaks, mascots, reward loops.",
+      "Don't adopt corporate bank aesthetics — dense institutional tables, navy/gold palettes.",
+      "Don't use neon fintech styling — dark mode with electric accents, glassmorphism cards.",
+      "Don't spread peach as a background wash, gradient fill, or page tint.",
+      "Don't add side-stripe borders on cards, list items, or alerts.",
+      "Don't use gradient text for headings or amounts.",
+      "Don't nest cards inside cards — use Glass List rows instead.",
+      "Don't import custom display fonts or use fluid clamp() heading scales.",
+      "Don't add decorative motion — transitions convey state only."
+    ]
+  }
+}

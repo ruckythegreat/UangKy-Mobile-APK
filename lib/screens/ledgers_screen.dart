@@ -156,13 +156,13 @@ class LedgersScreen extends StatelessWidget {
                     'Buku keuangan',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: const Color(0xFF1C1917),
+                          color: AppColors.inkPrimary,
                         ),
                   ),
                   Text(
                     'Pilih buku atau buat baru',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF78716C),
+                          color: AppColors.inkMuted,
                         ),
                   ),
                 ],
@@ -218,14 +218,14 @@ class LedgersScreen extends StatelessWidget {
                               ledger.type,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.black.withValues(alpha: 0.55),
+                                color: AppColors.inkMuted,
                               ),
                             ),
                             Text(
                               '$count transaksi',
                               style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.black.withValues(alpha: 0.45),
+                                color: AppColors.inkMuted,
                               ),
                             ),
                           ],
@@ -242,13 +242,13 @@ class LedgersScreen extends StatelessWidget {
                             'Saldo',
                             style: TextStyle(
                               fontSize: 11,
-                              color: Colors.black.withValues(alpha: 0.55),
+                              color: AppColors.inkMuted,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: Colors.black.withValues(alpha: 0.35)),
+                      Icon(Icons.chevron_right, color: AppColors.inkMuted.withValues(alpha: 0.65)),
                     ],
                   ),
                 ),
@@ -262,7 +262,7 @@ class LedgersScreen extends StatelessWidget {
             child: Text(
               'Tip: ketuk buku untuk riwayat; ikon hapus di detail untuk hapus transaksi.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12, color: Colors.black.withValues(alpha: 0.72)),
+              style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
             ),
           ),
         ),
