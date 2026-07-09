@@ -11,7 +11,6 @@ import 'ledger_detail_screen.dart';
 import 'ledgers_screen.dart';
 import 'reports_screen.dart';
 import 'scheduling_screen.dart';
-import '../theme/app_colors.dart';
 import '../widgets/web_mobile_download_banner.dart';
 
 class ShellScreen extends StatefulWidget {
@@ -118,14 +117,7 @@ class _ShellScreenState extends State<ShellScreen> with WidgetsBindingObserver {
                 padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        AppColors.peach.withValues(alpha: 0.2),
-                        scheme.surfaceContainerHighest.withValues(alpha: 0.28),
-                      ],
-                    ),
+                    color: scheme.surface,
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                     border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.5)),
                   ),

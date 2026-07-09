@@ -6,6 +6,7 @@ import '../providers/finance_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/color_parse.dart';
 import '../utils/currency_format.dart';
+import '../widgets/empty_hint.dart';
 import 'add_transaction_screen.dart';
 
 /// Satu buku: saldo, ringkas masuk/keluar, daftar transaksi (builder untuk daftar panjang).
@@ -79,7 +80,10 @@ class LedgerDetailScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       alignment: Alignment.center,
-                      child: Text(ledger.icon, style: const TextStyle(fontSize: 22)),
+                      child: Text(
+                        ledger.icon,
+                        style: const TextStyle(fontSize: 22),
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -88,11 +92,17 @@ class LedgerDetailScreen extends StatelessWidget {
                         children: [
                           Text(
                             ledger.name,
-                            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
                           ),
                           Text(
                             ledger.type,
-                            style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.inkMuted,
+                            ),
                           ),
                         ],
                       ),
@@ -112,7 +122,10 @@ class LedgerDetailScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Saldo',
-                          style: TextStyle(color: AppColors.peach.withValues(alpha: 0.88), fontSize: 13),
+                          style: TextStyle(
+                            color: AppColors.peach.withValues(alpha: 0.88),
+                            fontSize: 13,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -154,17 +167,24 @@ class LedgerDetailScreen extends StatelessWidget {
                     onPressed: () async {
                       await Navigator.of(context).push<void>(
                         MaterialPageRoute(
-                          builder: (_) => AddTransactionScreen(preselectedLedgerId: ledgerId),
+                          builder: (_) => AddTransactionScreen(
+                            preselectedLedgerId: ledgerId,
+                          ),
                         ),
                       );
                     },
                     icon: const Icon(Icons.add, size: 20),
-                    label: const Text('Tambah di sini', style: TextStyle(fontWeight: FontWeight.w600)),
+                    label: const Text(
+                      'Tambah di sini',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.inkPrimary,
                       side: const BorderSide(color: AppColors.borderSoft),
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
                   ),
                 ),
@@ -172,9 +192,9 @@ class LedgerDetailScreen extends StatelessWidget {
                 Text(
                   'Riwayat',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.inkSecondary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.inkSecondary,
+                  ),
                 ),
                 const SizedBox(height: 8),
               ],
@@ -184,14 +204,18 @@ class LedgerDetailScreen extends StatelessWidget {
         if (txs.isEmpty)
           SliverToBoxAdapter(
             child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Center(
-                  child: Text(
-                    'Belum ada transaksi',
-                    style: const TextStyle(color: AppColors.inkMuted),
-                  ),
-                ),
+              child: EmptyHint(
+                text:
+                    'Belum ada transaksi di buku ini. Catat pemasukan atau pengeluaran pertama untuk mulai melihat riwayat.',
+                action: 'Tambah transaksi',
+                onAction: () async {
+                  await Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          AddTransactionScreen(preselectedLedgerId: ledgerId),
+                    ),
+                  );
+                },
               ),
             ),
           )
@@ -209,18 +233,27 @@ class LedgerDetailScreen extends StatelessWidget {
                     onTap: () => onEditTransaction(transaction),
                     title: Text(
                       transaction.category,
-                      style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           transaction.method == 'cash' ? 'Tunai' : 'Transfer',
-                          style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.inkMuted,
+                          ),
                         ),
                         Text(
                           transaction.date,
-                          style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.inkMuted,
+                          ),
                         ),
                         if (transaction.notes.isNotEmpty)
                           Text(
@@ -237,14 +270,20 @@ class LedgerDetailScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 6),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
                               decoration: BoxDecoration(
-                                color: Colors.black.withValues(alpha: 0.08),
+                                color: AppColors.inkScrim,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Text(
                                 'Otomatis',
-                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
@@ -258,7 +297,9 @@ class LedgerDetailScreen extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             fontSize: 15,
-                            color: pos ? AppColors.incomeGreen : AppColors.expenseRed,
+                            color: pos
+                                ? AppColors.incomeGreen
+                                : AppColors.expenseRed,
                           ),
                         ),
                         IconButton(
@@ -270,13 +311,21 @@ class LedgerDetailScreen extends StatelessWidget {
                               builder: (ctx) => AlertDialog(
                                 title: const Text('Hapus transaksi?'),
                                 actions: [
-                                  TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-                                  FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Hapus')),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(ctx, false),
+                                    child: const Text('Batal'),
+                                  ),
+                                  FilledButton(
+                                    onPressed: () => Navigator.pop(ctx, true),
+                                    child: const Text('Hapus'),
+                                  ),
                                 ],
                               ),
                             );
                             if (ok == true && context.mounted) {
-                              await context.read<FinanceProvider>().deleteTransaction(transaction.id);
+                              await context
+                                  .read<FinanceProvider>()
+                                  .deleteTransaction(transaction.id);
                             }
                           },
                         ),
@@ -308,7 +357,7 @@ class _MiniStat extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: AppColors.onInk.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -316,11 +365,18 @@ class _MiniStat extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, size: 16, color: AppColors.peach.withValues(alpha: 0.9)),
+              Icon(
+                icon,
+                size: 16,
+                color: AppColors.peach.withValues(alpha: 0.9),
+              ),
               const SizedBox(width: 6),
               Text(
                 label,
-                style: TextStyle(fontSize: 11, color: AppColors.peach.withValues(alpha: 0.85)),
+                style: TextStyle(
+                  fontSize: 11,
+                  color: AppColors.peach.withValues(alpha: 0.85),
+                ),
               ),
             ],
           ),

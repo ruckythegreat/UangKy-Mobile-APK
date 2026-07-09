@@ -24,7 +24,13 @@ class LedgersScreen extends StatelessWidget {
     '#FFCC99',
   ];
 
-  static const _typeSuggestions = ['Personal', 'Usaha', 'Bendahara', 'Warung', 'Lainnya'];
+  static const _typeSuggestions = [
+    'Personal',
+    'Usaha',
+    'Bendahara',
+    'Warung',
+    'Lainnya',
+  ];
 
   Future<void> _showAddLedgerDialog(BuildContext context) async {
     final nameCtrl = TextEditingController();
@@ -37,7 +43,10 @@ class LedgersScreen extends StatelessWidget {
         context: context,
         builder: (ctx) => StatefulBuilder(
           builder: (ctx, setLocal) => AlertDialog(
-            title: const Text('Buku baru', style: TextStyle(fontWeight: FontWeight.w800)),
+            title: const Text(
+              'Buku baru',
+              style: TextStyle(fontWeight: FontWeight.w800),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -78,7 +87,10 @@ class LedgersScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text('Warna aksen', style: Theme.of(ctx).textTheme.labelSmall),
+                  Text(
+                    'Warna aksen',
+                    style: Theme.of(ctx).textTheme.labelSmall,
+                  ),
                   const SizedBox(height: 6),
                   Wrap(
                     spacing: 8,
@@ -96,7 +108,9 @@ class LedgersScreen extends StatelessWidget {
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: colorHex == c ? 3 : 1,
-                                color: colorHex == c ? Colors.black : Colors.black26,
+                                color: colorHex == c
+                                    ? AppColors.inkPrimary
+                                    : AppColors.inkScrim,
                               ),
                             ),
                           ),
@@ -107,7 +121,10 @@ class LedgersScreen extends StatelessWidget {
               ),
             ),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx, false),
+                child: const Text('Batal'),
+              ),
               FilledButton(
                 onPressed: () {
                   if (nameCtrl.text.trim().isEmpty) return;
@@ -155,15 +172,15 @@ class LedgersScreen extends StatelessWidget {
                   Text(
                     'Buku keuangan',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.inkPrimary,
-                        ),
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.inkPrimary,
+                    ),
                   ),
                   Text(
                     'Pilih buku atau buat baru',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.inkMuted,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(color: AppColors.inkMuted),
                   ),
                 ],
               ),
@@ -178,7 +195,9 @@ class LedgersScreen extends StatelessWidget {
         const SizedBox(height: 16),
         ...fin.ledgers.map((ledger) {
           final balance = fin.ledgerBalance(ledger.id);
-          final count = fin.transactions.where((t) => t.ledgerId == ledger.id).length;
+          final count = fin.transactions
+              .where((t) => t.ledgerId == ledger.id)
+              .length;
           final tint = parseHexColor(ledger.color, opacity: 0.28);
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
@@ -200,7 +219,10 @@ class LedgersScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         alignment: Alignment.center,
-                        child: Text(ledger.icon, style: const TextStyle(fontSize: 26)),
+                        child: Text(
+                          ledger.icon,
+                          style: const TextStyle(fontSize: 26),
+                        ),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
@@ -236,7 +258,10 @@ class LedgersScreen extends StatelessWidget {
                         children: [
                           Text(
                             formatIdr(balance),
-                            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                            ),
                           ),
                           Text(
                             'Saldo',
@@ -248,7 +273,10 @@ class LedgersScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: AppColors.inkMuted.withValues(alpha: 0.65)),
+                      Icon(
+                        Icons.chevron_right,
+                        color: AppColors.inkMuted.withValues(alpha: 0.65),
+                      ),
                     ],
                   ),
                 ),

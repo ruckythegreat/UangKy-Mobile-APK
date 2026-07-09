@@ -19,6 +19,12 @@ class UangKyApp extends StatelessWidget {
         title: 'UangKy',
         debugShowCheckedModeBanner: false,
         theme: buildUangKyTheme(),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: MediaQuery.textScalerOf(context).clamp(minScaleFactor: 1, maxScaleFactor: 1.3),
+          ),
+          child: child!,
+        ),
         home: const _AppLoader(),
       ),
     );

@@ -10,19 +10,9 @@ class BrandedSplash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFFFF8F2),
-              AppColors.peach,
-              AppColors.scaffold,
-            ],
-            stops: [0.0, 0.42, 1.0],
-          ),
-        ),
+      backgroundColor: AppColors.scaffold,
+      body: ColoredBox(
+        color: AppColors.scaffold,
         child: SafeArea(
           child: Center(
             child: Column(
@@ -31,21 +21,18 @@ class BrandedSplash extends StatelessWidget {
                 DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.inkPrimary.withValues(alpha: 0.12),
-                        blurRadius: 32,
-                        offset: const Offset(0, 14),
-                      ),
-                    ],
+                    border: Border.all(color: AppColors.borderSoft),
                   ),
                   child: const ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(28)),
                     child: ColoredBox(
-                      color: Color(0x26FFFFFF),
+                      color: AppColors.surfaceGlass,
                       child: Padding(
                         padding: EdgeInsets.all(20),
-                        child: UangkyLogo(variant: UangkyLogoVariant.transparent, size: 120),
+                        child: UangkyLogo(
+                          variant: UangkyLogoVariant.transparent,
+                          size: 120,
+                        ),
                       ),
                     ),
                   ),
@@ -54,18 +41,18 @@ class BrandedSplash extends StatelessWidget {
                 Text(
                   'UangKy',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.5,
-                        color: AppColors.inkPrimary,
-                      ),
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                    color: AppColors.inkPrimary,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   'Catatan keuangan ringan',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.inkMuted,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: AppColors.inkMuted,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(height: 36),
                 const SizedBox(

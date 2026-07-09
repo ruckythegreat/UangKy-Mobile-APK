@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
 import '../utils/open_external_downloads.dart';
 import 'uangky_logo.dart';
 
@@ -12,56 +13,95 @@ class WebMobileDownloadBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!kIsWeb) return const SizedBox.shrink();
     return Material(
-      color: Colors.black,
+      color: AppColors.inkPrimary,
       child: SafeArea(
         bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          child: Row(
-            children: [
-              const ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                child: ColoredBox(
-                  color: Color(0x22FFFFFF),
-                  child: Padding(
-                    padding: EdgeInsets.all(2),
-                    child: UangkyLogo(variant: UangkyLogoVariant.solid, size: 34),
-                  ),
-                ),
+        child: LayoutBuilder(
+          builder: (context, c) {
+            final narrow = c.maxWidth < 420;
+            final text = Text(
+              narrow
+                  ? 'Unduh APK untuk penyimpanan stabil di ponsel.'
+                  : 'Versi web ringkas. Unduh APK Android untuk penyimpanan stabil.',
+              style: TextStyle(
+                color: AppColors.onInk.withValues(alpha: 0.92),
+                fontSize: 12,
+                height: 1.25,
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Versi web ringkas. Untuk penyimpanan stabil di ponsel, unduh APK Android (Google Drive).',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.92),
-                    fontSize: 12,
-                    height: 1.25,
+            );
+            final actions = Row(
+              mainAxisSize: narrow ? MainAxisSize.max : MainAxisSize.min,
+              children: [
+                if (narrow)
+                  Expanded(
+                    child: TextButton(
+                      onPressed: openUangKyApkDirectDownload,
+                      child: const Text(
+                        'Unduh APK',
+                        style: TextStyle(
+                          color: AppColors.peach,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                else
+                  TextButton(
+                    onPressed: openUangKyApkDirectDownload,
+                    child: const Text(
+                      'Unduh APK',
+                      style: TextStyle(
+                        color: AppColors.peach,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              TextButton(
-                onPressed: openUangKyApkDirectDownload,
-                child: const Text(
-                  'Unduh APK',
-                  style: TextStyle(
-                    color: Color(0xFFFFCC99),
-                    fontWeight: FontWeight.w700,
+                if (!narrow)
+                  TextButton(
+                    onPressed: openUangKyApkInDrive,
+                    child: const Text(
+                      'Drive',
+                      style: TextStyle(
+                        color: AppColors.peach,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              TextButton(
-                onPressed: openUangKyApkInDrive,
-                child: const Text(
-                  'Drive',
-                  style: TextStyle(
-                    color: Color(0xFFFFCC99),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
+              ],
+            );
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: narrow
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            const UangkyLogo(
+                              variant: UangkyLogoVariant.solid,
+                              size: 34,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(child: text),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        actions,
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        const UangkyLogo(
+                          variant: UangkyLogoVariant.solid,
+                          size: 34,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(child: text),
+                        actions,
+                      ],
+                    ),
+            );
+          },
         ),
       ),
     );

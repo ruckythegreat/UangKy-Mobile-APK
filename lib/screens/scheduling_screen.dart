@@ -5,10 +5,18 @@ import '../models/schedule.dart';
 import '../providers/finance_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/currency_format.dart';
+import '../widgets/empty_hint.dart';
 
 /// Tab Jadwal: transaksi berulang. Eksekusi ke buku saat app dibuka/dilanjutkan ([FinanceProvider.checkDueSchedules]).
 const _incomeCategories = ['Gaji', 'Bonus', 'Iuran', 'Penjualan', 'Lainnya'];
-const _expenseCategories = ['Makan', 'Transport', 'Tagihan', 'Stok Barang', 'Iuran', 'Lainnya'];
+const _expenseCategories = [
+  'Makan',
+  'Transport',
+  'Tagihan',
+  'Stok Barang',
+  'Iuran',
+  'Lainnya',
+];
 
 class SchedulingScreen extends StatefulWidget {
   const SchedulingScreen({super.key});
@@ -46,12 +54,21 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
     super.dispose();
   }
 
-  List<String> get _categories => _type == 'income' ? _incomeCategories : _expenseCategories;
+  List<String> get _categories =>
+      _type == 'income' ? _incomeCategories : _expenseCategories;
 
   String _intervalLabel(Schedule s) {
     if (s.interval == 'daily') return 'Setiap hari';
     if (s.interval == 'weekly') {
-      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const days = [
+        'Minggu',
+        'Senin',
+        'Selasa',
+        'Rabu',
+        'Kamis',
+        'Jumat',
+        'Sabtu',
+      ];
       final idx = s.dayOfWeek ?? 1;
       return 'Setiap ${days[idx.clamp(0, 6)]}';
     }
@@ -70,7 +87,9 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
       _amountError = amountError;
       _categoryError = categoryError;
     });
-    if (nameError != null || amountError != null || categoryError != null) return;
+    if (nameError != null || amountError != null || categoryError != null) {
+      return;
+    }
     final s = Schedule(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,
@@ -109,15 +128,15 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
         Text(
           'Jadwal otomatis',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.inkPrimary,
-              ),
+            fontWeight: FontWeight.w700,
+            color: AppColors.inkPrimary,
+          ),
         ),
         Text(
           'Harian, mingguan, atau bulanan — dijalankan saat app aktif',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.inkMuted,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.inkMuted),
         ),
         const SizedBox(height: 16),
         if (!_showForm)
@@ -138,7 +157,10 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                       const Expanded(
                         child: Text(
                           'Jadwal Baru',
-                          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                       TextButton(
@@ -159,10 +181,13 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: _ledgerId.isEmpty ? null : _ledgerId,
+                    initialValue: _ledgerId.isEmpty ? null : _ledgerId,
                     items: [
                       for (final l in fin.ledgers)
-                        DropdownMenuItem(value: l.id, child: Text('${l.icon} ${l.name}')),
+                        DropdownMenuItem(
+                          value: l.id,
+                          child: Text('${l.icon} ${l.name}'),
+                        ),
                     ],
                     onChanged: (v) => setState(() => _ledgerId = v ?? ''),
                     decoration: const InputDecoration(labelText: 'Buku'),
@@ -198,25 +223,30 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                   const SizedBox(height: 12),
                   TextField(
                     controller: _amountCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
                       labelText: 'Nominal',
                       errorText: _amountError,
                     ),
                     onChanged: (_) {
-                      if (_amountError != null) setState(() => _amountError = null);
+                      if (_amountError != null) {
+                        setState(() => _amountError = null);
+                      }
                     },
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: _category.isEmpty ? null : _category,
+                    initialValue: _category.isEmpty ? null : _category,
                     hint: const Text('Kategori'),
                     decoration: InputDecoration(
                       labelText: 'Kategori',
                       errorText: _categoryError,
                     ),
                     items: [
-                      for (final c in _categories) DropdownMenuItem(value: c, child: Text(c)),
+                      for (final c in _categories)
+                        DropdownMenuItem(value: c, child: Text(c)),
                     ],
                     onChanged: (v) => setState(() {
                       _category = v ?? '';
@@ -225,19 +255,26 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: _interval,
+                    initialValue: _interval,
                     items: const [
                       DropdownMenuItem(value: 'daily', child: Text('Harian')),
-                      DropdownMenuItem(value: 'weekly', child: Text('Mingguan')),
-                      DropdownMenuItem(value: 'monthly', child: Text('Bulanan')),
+                      DropdownMenuItem(
+                        value: 'weekly',
+                        child: Text('Mingguan'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'monthly',
+                        child: Text('Bulanan'),
+                      ),
                     ],
-                    onChanged: (v) => setState(() => _interval = v ?? 'monthly'),
+                    onChanged: (v) =>
+                        setState(() => _interval = v ?? 'monthly'),
                     decoration: const InputDecoration(labelText: 'Interval'),
                   ),
                   if (_interval == 'weekly') ...[
                     const SizedBox(height: 12),
                     DropdownButtonFormField<int>(
-                      value: _dayOfWeek,
+                      initialValue: _dayOfWeek,
                       items: const [
                         DropdownMenuItem(value: 1, child: Text('Senin')),
                         DropdownMenuItem(value: 2, child: Text('Selasa')),
@@ -248,14 +285,18 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                         DropdownMenuItem(value: 0, child: Text('Minggu')),
                       ],
                       onChanged: (v) => setState(() => _dayOfWeek = v ?? 1),
-                      decoration: const InputDecoration(labelText: 'Hari (Minggu=0 … Sabtu=6)'),
+                      decoration: const InputDecoration(
+                        labelText: 'Hari (Minggu=0 … Sabtu=6)',
+                      ),
                     ),
                   ],
                   if (_interval == 'monthly') ...[
                     const SizedBox(height: 12),
                     DropdownButtonFormField<int>(
-                      value: _dayOfMonth.clamp(1, 31),
-                      decoration: const InputDecoration(labelText: 'Tanggal tiap bulan'),
+                      initialValue: _dayOfMonth.clamp(1, 31),
+                      decoration: const InputDecoration(
+                        labelText: 'Tanggal tiap bulan',
+                      ),
                       items: [
                         for (var i = 1; i <= 31; i++)
                           DropdownMenuItem(value: i, child: Text('$i')),
@@ -264,7 +305,10 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                     ),
                   ],
                   const SizedBox(height: 16),
-                  FilledButton(onPressed: _save, child: const Text('Simpan Jadwal')),
+                  FilledButton(
+                    onPressed: _save,
+                    child: const Text('Simpan Jadwal'),
+                  ),
                 ],
               ),
             ),
@@ -274,21 +318,18 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
         Text(
           'Daftar jadwal',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.inkSecondary,
-              ),
+            fontWeight: FontWeight.w700,
+            color: AppColors.inkSecondary,
+          ),
         ),
         const SizedBox(height: 8),
         if (fin.schedules.isEmpty)
           Card(
-            child: Padding(
-              padding: const EdgeInsets.all(28),
-              child: Center(
-                child: Text(
-                  'Belum ada jadwal otomatis',
-                  style: const TextStyle(color: AppColors.inkMuted),
-                ),
-              ),
+            child: EmptyHint(
+              text:
+                  'Belum ada jadwal otomatis. Tambahkan tagihan atau pemasukan berulang agar tidak perlu dicatat manual.',
+              action: 'Tambah jadwal',
+              onAction: () => setState(() => _showForm = true),
             ),
           )
         else
@@ -312,7 +353,10 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                               children: [
                                 Text(
                                   schedule.name,
-                                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 14,
+                                  ),
                                 ),
                                 Text(
                                   ledger?.name ?? '-',
@@ -328,7 +372,9 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                             '${pos ? '+' : '-'}${formatIdr(schedule.amount)}',
                             style: TextStyle(
                               fontWeight: FontWeight.w800,
-                              color: pos ? AppColors.incomeGreen : AppColors.expenseRed,
+                              color: pos
+                                  ? AppColors.incomeGreen
+                                  : AppColors.expenseRed,
                             ),
                           ),
                         ],
@@ -336,7 +382,10 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                       const SizedBox(height: 6),
                       Text(
                         '${_intervalLabel(schedule)} • ${schedule.category}',
-                        style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.inkMuted,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -345,39 +394,62 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                             child: OutlinedButton.icon(
                               onPressed: () {
                                 context.read<FinanceProvider>().updateSchedule(
-                                      schedule.id,
-                                      (s) => s.copyWith(isActive: !s.isActive),
-                                    );
+                                  schedule.id,
+                                  (s) => s.copyWith(isActive: !s.isActive),
+                                );
                               },
-                              icon: Icon(schedule.isActive ? Icons.pause : Icons.play_arrow, size: 18),
-                              label: Text(schedule.isActive ? 'Jeda' : 'Aktifkan'),
+                              icon: Icon(
+                                schedule.isActive
+                                    ? Icons.pause
+                                    : Icons.play_arrow,
+                                size: 18,
+                              ),
+                              label: Text(
+                                schedule.isActive ? 'Jeda' : 'Aktifkan',
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
                           Tooltip(
                             message: 'Hapus jadwal',
                             child: FilledButton(
-                            style: FilledButton.styleFrom(
-                              backgroundColor: AppColors.expenseRed,
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                            ),
-                            onPressed: () async {
-                              final ok = await showDialog<bool>(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  title: const Text('Hapus jadwal?'),
-                                  actions: [
-                                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-                                    FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Hapus')),
-                                  ],
+                              style: FilledButton.styleFrom(
+                                backgroundColor: AppColors.expenseRed,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 14,
                                 ),
-                              );
-                              if (ok == true && context.mounted) {
-                                await context.read<FinanceProvider>().deleteSchedule(schedule.id);
-                              }
-                            },
-                            child: const Icon(Icons.delete_outline, color: Colors.white),
-                          ),
+                              ),
+                              onPressed: () async {
+                                final ok = await showDialog<bool>(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: const Text('Hapus jadwal?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(ctx, false),
+                                        child: const Text('Batal'),
+                                      ),
+                                      FilledButton(
+                                        onPressed: () =>
+                                            Navigator.pop(ctx, true),
+                                        child: const Text('Hapus'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                if (ok == true && context.mounted) {
+                                  await context
+                                      .read<FinanceProvider>()
+                                      .deleteSchedule(schedule.id);
+                                }
+                              },
+                              child: const Icon(
+                                Icons.delete_outline,
+                                color: AppColors.onInk,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -386,7 +458,10 @@ class _SchedulingScreenState extends State<SchedulingScreen> {
                           padding: const EdgeInsets.only(top: 8),
                           child: Text(
                             'Terakhir dijalankan: ${schedule.lastExecuted}',
-                            style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.inkMuted,
+                            ),
                           ),
                         ),
                     ],
@@ -439,7 +514,7 @@ class _MiniType extends StatelessWidget {
               label,
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: selected ? Colors.white : AppColors.inkPrimary,
+                color: selected ? AppColors.onInk : AppColors.inkPrimary,
               ),
             ),
           ),

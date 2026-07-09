@@ -79,7 +79,7 @@ ThemeData buildUangKyTheme() {
       height: 60,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         return TextStyle(
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: FontWeight.w600,
           color: states.contains(WidgetState.selected)
               ? AppColors.inkPrimary

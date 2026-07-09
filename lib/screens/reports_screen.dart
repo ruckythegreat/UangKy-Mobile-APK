@@ -7,6 +7,7 @@ import '../providers/finance_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/currency_format.dart';
 import '../utils/csv_export.dart';
+import '../widgets/empty_hint.dart';
 
 /// Laporan per bulan: ringkas masuk/keluar/net, filter, daftar transaksi, ekspor CSV.
 class ReportsScreen extends StatefulWidget {
@@ -53,12 +54,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
   @override
   Widget build(BuildContext context) {
     final fin = context.watch<FinanceProvider>();
-    final categories = fin.transactions.map((t) => t.category).toSet().toList()..sort();
+    final categories = fin.transactions.map((t) => t.category).toSet().toList()
+      ..sort();
 
     final filtered = fin.transactions.where((t) {
       if (!t.date.startsWith(_monthKey)) return false;
       if (_ledgerFilter != 'all' && t.ledgerId != _ledgerFilter) return false;
-      if (_categoryFilter != 'all' && t.category != _categoryFilter) return false;
+      if (_categoryFilter != 'all' && t.category != _categoryFilter) {
+        return false;
+      }
       return true;
     }).toList();
 
@@ -86,15 +90,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 Text(
                   'Laporan',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.inkPrimary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.inkPrimary,
+                  ),
                 ),
                 Text(
                   'Filter bulan & buku, lalu bagikan CSV',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.inkMuted,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.inkMuted),
                 ),
                 const SizedBox(height: 14),
                 Card(
@@ -105,7 +109,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       children: [
                         Text(
                           'Filter',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.inkSecondary,
                               ),
@@ -122,25 +127,38 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           onTap: _pickMonth,
                         ),
                         DropdownButtonFormField<String>(
-                          value: _ledgerFilter,
+                          initialValue: _ledgerFilter,
                           decoration: const InputDecoration(labelText: 'Buku'),
                           items: [
-                            const DropdownMenuItem(value: 'all', child: Text('Semua buku')),
+                            const DropdownMenuItem(
+                              value: 'all',
+                              child: Text('Semua buku'),
+                            ),
                             for (final l in fin.ledgers)
-                              DropdownMenuItem(value: l.id, child: Text('${l.icon} ${l.name}')),
+                              DropdownMenuItem(
+                                value: l.id,
+                                child: Text('${l.icon} ${l.name}'),
+                              ),
                           ],
-                          onChanged: (v) => setState(() => _ledgerFilter = v ?? 'all'),
+                          onChanged: (v) =>
+                              setState(() => _ledgerFilter = v ?? 'all'),
                         ),
                         const SizedBox(height: 8),
                         DropdownButtonFormField<String>(
-                          value: _categoryFilter,
-                          decoration: const InputDecoration(labelText: 'Kategori'),
+                          initialValue: _categoryFilter,
+                          decoration: const InputDecoration(
+                            labelText: 'Kategori',
+                          ),
                           items: [
-                            const DropdownMenuItem(value: 'all', child: Text('Semua kategori')),
+                            const DropdownMenuItem(
+                              value: 'all',
+                              child: Text('Semua kategori'),
+                            ),
                             for (final c in categories)
                               DropdownMenuItem(value: c, child: Text(c)),
                           ],
-                          onChanged: (v) => setState(() => _categoryFilter = v ?? 'all'),
+                          onChanged: (v) =>
+                              setState(() => _categoryFilter = v ?? 'all'),
                         ),
                       ],
                     ),
@@ -172,7 +190,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                         label: 'Net',
                         value: formatIdr(net),
                         bg: AppColors.surfaceMuted.withValues(alpha: 0.6),
-                        fg: net >= 0 ? AppColors.incomeGreen : AppColors.expenseRed,
+                        fg: net >= 0
+                            ? AppColors.incomeGreen
+                            : AppColors.expenseRed,
                       ),
                     ),
                   ],
@@ -187,9 +207,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 Text(
                   'Transaksi (${sorted.length})',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF44403C),
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.inkSecondary,
+                  ),
                 ),
                 const SizedBox(height: 8),
               ],
@@ -199,14 +219,19 @@ class _ReportsScreenState extends State<ReportsScreen> {
         if (sorted.isEmpty)
           SliverToBoxAdapter(
             child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Center(
-                  child: Text(
-                    'Tidak ada transaksi untuk filter ini',
-                    style: const TextStyle(color: AppColors.inkMuted),
-                  ),
-                ),
+              child: EmptyHint(
+                text: _ledgerFilter == 'all' && _categoryFilter == 'all'
+                    ? 'Belum ada transaksi di bulan ini.'
+                    : 'Tidak ada transaksi yang cocok dengan filter ini.',
+                action: _ledgerFilter == 'all' && _categoryFilter == 'all'
+                    ? null
+                    : 'Reset filter',
+                onAction: _ledgerFilter == 'all' && _categoryFilter == 'all'
+                    ? null
+                    : () => setState(() {
+                        _ledgerFilter = 'all';
+                        _categoryFilter = 'all';
+                      }),
               ),
             ),
           )
@@ -222,13 +247,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 final pos = t.type == 'income';
                 return Card(
                   child: ListTile(
-                    title: Text(t.category, style: const TextStyle(fontWeight: FontWeight.w700)),
-                    subtitle: Text('${ledger?.icon ?? ''} ${ledger?.name ?? '-'} • ${t.date}'),
+                    title: Text(
+                      t.category,
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    subtitle: Text(
+                      '${ledger?.icon ?? ''} ${ledger?.name ?? '-'} • ${t.date}',
+                    ),
                     trailing: Text(
                       '${pos ? '+' : '-'}${formatIdr(t.amount)}',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        color: pos ? AppColors.incomeGreen : AppColors.expenseRed,
+                        color: pos
+                            ? AppColors.incomeGreen
+                            : AppColors.expenseRed,
                       ),
                     ),
                   ),
@@ -259,29 +291,37 @@ class _StatTile extends StatelessWidget {
     return Semantics(
       label: '$label: $value',
       child: Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: fg.withValues(alpha: 0.2)),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: fg.withValues(alpha: 0.2)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: fg,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: fg,
+              ),
+            ),
+          ],
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: fg),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: fg),
-          ),
-        ],
-      ),
-    ),
     );
   }
 }

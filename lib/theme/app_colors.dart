@@ -5,9 +5,15 @@ abstract final class AppColors {
   static const Color peach = Color(0xFFFFCC99);
   static const Color inkPrimary = Color(0xFF1C1917);
   static const Color inkSecondary = Color(0xFF44403C);
+
   /// Subtitle & helper — ≥4.5:1 on scaffold (#F6F4F1) and card.
   static const Color inkMuted = Color(0xFF57534E);
   static const Color inkFocus = Color(0xFF57534E);
+  static const Color textPrimary = inkPrimary;
+  static const Color textSecondary = inkSecondary;
+  static const Color textMuted = inkMuted;
+  static const Color onInk = Color(0xFFFFFFFF);
+  static const Color inkScrim = Color(0x14000000);
   static const Color scaffold = Color(0xFFF6F4F1);
   static const Color card = Color(0xFFFFFFFF);
   static const Color surfaceMuted = Color(0xFFECE8E3);

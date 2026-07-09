@@ -9,6 +9,7 @@ import '../providers/finance_provider.dart';
 import '../theme/app_colors.dart';
 import '../utils/color_parse.dart';
 import '../utils/currency_format.dart';
+import '../widgets/empty_hint.dart';
 import '../widgets/uangky_logo.dart';
 import 'settings_screen.dart';
 
@@ -35,8 +36,11 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   /// Jumlah hari ke belakang untuk grafik (7 / 14 / 30).
   int _chartRangeDays = 7;
+
   /// `null` = semua buku; selain itu filter [ledgerId].
   String? _chartLedgerId;
+  int? _barsSig;
+  List<_ChartBar>? _barsMemo;
 
   static const _dayShort = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
@@ -63,6 +67,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return bars;
   }
 
+  int _barsSigFor(FinanceProvider fin, String? f) => Object.hash(
+    _chartRangeDays,
+    f,
+    Object.hashAll(
+      fin.transactions.map(
+        (t) => Object.hash(t.date, t.amount, t.type, t.ledgerId),
+      ),
+    ),
+  );
+
+  List<_ChartBar> _barsFor(FinanceProvider fin, String? f) {
+    final s = _barsSigFor(fin, f);
+    if (s == _barsSig && _barsMemo != null) return _barsMemo!;
+    _barsSig = s;
+    return _barsMemo = _buildBars(fin, f);
+  }
+
   String _bottomLabel(DateTime d, int idxFromOldest) {
     if (_chartRangeDays <= 7) {
       final labelIdx = d.weekday == DateTime.sunday ? 0 : d.weekday;
@@ -79,20 +100,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final fin = context.watch<FinanceProvider>();
-    if (_chartLedgerId != null && !fin.ledgers.any((l) => l.id == _chartLedgerId)) {
+    if (_chartLedgerId != null &&
+        !fin.ledgers.any((l) => l.id == _chartLedgerId)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => _chartLedgerId = null);
       });
     }
     final chartLedgerFilter =
-        _chartLedgerId != null && fin.ledgers.any((l) => l.id == _chartLedgerId) ? _chartLedgerId : null;
+        _chartLedgerId != null && fin.ledgers.any((l) => l.id == _chartLedgerId)
+        ? _chartLedgerId
+        : null;
 
-    final bars = _buildBars(fin, chartLedgerFilter);
+    final bars = _barsFor(fin, chartLedgerFilter);
     final maxAbs = bars.fold<double>(0, (m, e) => math.max(m, e.net.abs()));
     final chartMaxY = maxAbs < 1 ? 100.0 : maxAbs * 1.15;
-    final rodWidth = _chartRangeDays <= 7 ? 14.0 : (_chartRangeDays <= 14 ? 7.0 : 4.0);
+    final rodWidth = _chartRangeDays <= 7
+        ? 14.0
+        : (_chartRangeDays <= 14 ? 7.0 : 4.0);
 
-    final recent = [...fin.transactions]..sort((a, b) => b.date.compareTo(a.date));
+    final recent = [...fin.transactions]
+      ..sort((a, b) => b.date.compareTo(a.date));
     final recent5 = recent.take(5).toList();
 
     return RefreshIndicator(
@@ -108,18 +135,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: AppColors.card,
-                  border: Border.all(color: AppColors.borderSoft.withValues(alpha: 0.85)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.inkPrimary.withValues(alpha: 0.06),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+                  border: Border.all(
+                    color: AppColors.borderSoft.withValues(alpha: 0.85),
+                  ),
                 ),
                 child: const Padding(
                   padding: EdgeInsets.all(6),
-                  child: UangkyLogo(variant: UangkyLogoVariant.transparent, size: 44),
+                  child: UangkyLogo(
+                    variant: UangkyLogoVariant.transparent,
+                    size: 44,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -130,16 +155,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Text(
                       'Beranda',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.3,
-                            color: AppColors.inkPrimary,
-                          ),
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.3,
+                        color: AppColors.inkPrimary,
+                      ),
                     ),
                     Text(
                       'Ringkasan keuanganmu',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.inkMuted,
-                          ),
+                        color: AppColors.inkMuted,
+                      ),
                     ),
                   ],
                 ),
@@ -208,9 +233,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Text(
             'Buku',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.inkSecondary,
-                ),
+              fontWeight: FontWeight.w700,
+              color: AppColors.inkSecondary,
+            ),
           ),
           ...fin.ledgers.map((ledger) {
             final bal = fin.ledgerBalance(ledger.id);
@@ -229,7 +254,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       children: [
                         CircleAvatar(
                           backgroundColor: tint,
-                          child: Text(ledger.icon, style: const TextStyle(fontSize: 18)),
+                          child: Text(
+                            ledger.icon,
+                            style: const TextStyle(fontSize: 18),
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -268,9 +296,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           Text(
             'Arus kas',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.inkSecondary,
-                ),
+              fontWeight: FontWeight.w700,
+              color: AppColors.inkSecondary,
+            ),
           ),
           SegmentedButton<int>(
             segments: const [
@@ -279,11 +307,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ButtonSegment(value: 30, label: Text('30 h')),
             ],
             selected: {_chartRangeDays},
-            onSelectionChanged: (s) => setState(() => _chartRangeDays = s.first),
+            onSelectionChanged: (s) =>
+                setState(() => _chartRangeDays = s.first),
           ),
           const SizedBox(height: 10),
           DropdownButtonFormField<String?>(
-            value: chartLedgerFilter,
+            initialValue: chartLedgerFilter,
             decoration: const InputDecoration(
               labelText: 'Filter buku',
               isDense: true,
@@ -296,7 +325,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               for (final l in fin.ledgers)
                 DropdownMenuItem<String?>(
                   value: l.id,
-                  child: Text('${l.icon} ${l.name}', overflow: TextOverflow.ellipsis),
+                  child: Text(
+                    '${l.icon} ${l.name}',
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
             ],
             onChanged: (v) => setState(() => _chartLedgerId = v),
@@ -314,87 +346,131 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       minY: 0,
                       gridData: const FlGridData(show: false),
                       borderData: FlBorderData(show: false),
-                    barTouchData: BarTouchData(
-                      touchTooltipData: BarTouchTooltipData(
-                        getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                          final i = group.x.toInt();
-                          if (i < 0 || i >= bars.length) return null;
-                          final net = bars[i].net;
-                          return BarTooltipItem(
-                            '${bars[i].label.isEmpty ? 'Hari ${i + 1}' : bars[i].label}\n${formatIdr(net)}',
-                            const TextStyle(color: Colors.white, fontSize: 12),
-                          );
-                        },
-                      ),
-                    ),
-                    titlesData: FlTitlesData(
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (v, m) {
-                            final i = v.toInt();
-                            if (i < 0 || i >= bars.length) return const SizedBox.shrink();
-                            final t = bars[i].label;
-                            if (t.isEmpty) return const SizedBox(height: 18);
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Text(
-                                t,
-                                style: const TextStyle(fontSize: 10, color: Colors.black87),
+                      barTouchData: BarTouchData(
+                        touchTooltipData: BarTouchTooltipData(
+                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                            final i = group.x.toInt();
+                            if (i < 0 || i >= bars.length) return null;
+                            final net = bars[i].net;
+                            final sign = net >= 0 ? '+' : '-';
+                            return BarTooltipItem(
+                              '${bars[i].label.isEmpty ? 'Hari ${i + 1}' : bars[i].label}\n$sign${formatIdr(net.abs())}',
+                              const TextStyle(
+                                color: AppColors.onInk,
+                                fontSize: 12,
                               ),
                             );
                           },
                         ),
                       ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 40,
-                          getTitlesWidget: (v, m) => Text(
-                            v >= 1000000
-                                ? '${(v / 1000000).toStringAsFixed(1)}jt'
-                                : v >= 1000
-                                    ? '${(v / 1000).toStringAsFixed(0)}k'
-                                    : v.toInt().toString(),
-                            style: const TextStyle(fontSize: 10, color: Colors.black54),
+                      titlesData: FlTitlesData(
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (v, m) {
+                              final i = v.toInt();
+                              if (i < 0 || i >= bars.length) {
+                                return const SizedBox.shrink();
+                              }
+                              final t = bars[i].label;
+                              if (t.isEmpty) return const SizedBox(height: 18);
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 6),
+                                child: Text(
+                                  t,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.inkMuted,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    ),
-                    barGroups: [
-                      for (var i = 0; i < bars.length; i++)
-                        BarChartGroupData(
-                          x: i,
-                          barRods: [
-                            BarChartRodData(
-                              toY: bars[i].net.abs(),
-                              width: rodWidth,
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                              color: bars[i].net >= 0 ? AppColors.chartGreen : AppColors.chartRed,
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (v, m) => Text(
+                              v >= 1000000
+                                  ? '${(v / 1000000).toStringAsFixed(1)}jt'
+                                  : v >= 1000
+                                  ? '${(v / 1000).toStringAsFixed(0)}k'
+                                  : v.toInt().toString(),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.inkMuted,
+                              ),
                             ),
-                          ],
+                          ),
                         ),
-                    ],
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 18,
+                            getTitlesWidget: (v, m) {
+                              final i = v.toInt();
+                              if (i < 0 ||
+                                  i >= bars.length ||
+                                  bars[i].net == 0) {
+                                return const SizedBox.shrink();
+                              }
+                              return Text(
+                                bars[i].net > 0 ? '+' : '-',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.inkSecondary,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                      ),
+                      barGroups: [
+                        for (var i = 0; i < bars.length; i++)
+                          BarChartGroupData(
+                            x: i,
+                            barRods: [
+                              BarChartRodData(
+                                toY: bars[i].net.abs(),
+                                width: rodWidth,
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(8),
+                                ),
+                                color: bars[i].net >= 0
+                                    ? AppColors.chartGreen
+                                    : AppColors.chartRed,
+                              ),
+                            ],
+                          ),
+                      ],
                     ),
-                  duration: Duration.zero,
-                  curve: Curves.linear,
+                    duration: Duration.zero,
+                    curve: Curves.linear,
+                  ),
                 ),
               ),
             ),
-          ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.trending_up, size: 16, color: AppColors.incomeGreen),
+              const SizedBox(width: 4),
+              Icon(Icons.trending_down, size: 16, color: AppColors.chartRed),
               const SizedBox(width: 6),
               Flexible(
                 child: Text(
-                  'Net harian (hijau positif, merah negatif) — sentuh batang untuk nominal',
+                  'Net harian (+ hijau / − merah) — sentuh batang untuk nominal',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 11, color: AppColors.inkMuted),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppColors.inkMuted,
+                  ),
                 ),
               ),
             ],
@@ -406,9 +482,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Text(
                   'Transaksi terakhir',
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.inkSecondary,
-                      ),
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.inkSecondary,
+                  ),
                 ),
               ),
               TextButton(
@@ -418,6 +494,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
           const SizedBox(height: 4),
+          if (recent5.isEmpty)
+            Card(
+              child: EmptyHint(
+                text:
+                    'Belum ada transaksi terbaru. Mulai dengan mencatat pemasukan atau pengeluaran pertama.',
+                action: 'Catat transaksi',
+                onAction: widget.onAddTransaction,
+              ),
+            ),
           ...recent5.map((t) {
             final ledger = fin.ledgerById(t.ledgerId);
             final pos = t.type == 'income';
@@ -426,7 +511,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Card(
                 child: ListTile(
                   onTap: () => widget.onEditTransaction(t),
-                  title: Text(t.category, style: const TextStyle(fontWeight: FontWeight.w700)),
+                  title: Text(
+                    t.category,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
                   subtitle: Text('${ledger?.name ?? '-'} • ${t.date}'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -435,7 +523,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         '${pos ? '+' : '-'}${formatIdr(t.amount)}',
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
-                          color: pos ? AppColors.incomeGreen : AppColors.expenseRed,
+                          color: pos
+                              ? AppColors.incomeGreen
+                              : AppColors.expenseRed,
                           fontSize: 13,
                         ),
                       ),
@@ -457,7 +547,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     child: Text(
                       'Ketuk baris untuk ubah. Jadwal & pengingat: menu pengaturan (ikon roda).',
-                      style: const TextStyle(fontSize: 12, color: AppColors.inkMuted),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.inkMuted,
+                      ),
                     ),
                   ),
                 ],

@@ -5,12 +5,24 @@ import 'package:provider/provider.dart';
 import '../models/transaction.dart';
 import '../providers/finance_provider.dart';
 import '../theme/app_colors.dart';
+import '../widgets/empty_hint.dart';
 
 const _incomeCategories = ['Gaji', 'Bonus', 'Iuran', 'Penjualan', 'Lainnya'];
-const _expenseCategories = ['Makan', 'Transport', 'Tagihan', 'Stok Barang', 'Iuran', 'Lainnya'];
+const _expenseCategories = [
+  'Makan',
+  'Transport',
+  'Tagihan',
+  'Stok Barang',
+  'Iuran',
+  'Lainnya',
+];
 
 class AddTransactionScreen extends StatefulWidget {
-  const AddTransactionScreen({super.key, this.preselectedLedgerId, this.existing});
+  const AddTransactionScreen({
+    super.key,
+    this.preselectedLedgerId,
+    this.existing,
+  });
 
   /// Buku yang dipilih saat membuka dari tab Buku / FAB.
   final String? preselectedLedgerId;
@@ -42,17 +54,24 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     final e = widget.existing;
     if (e != null) {
       _ledgerId = e.ledgerId;
-      _amountCtrl.text = e.amount == e.amount.roundToDouble() ? e.amount.toInt().toString() : e.amount.toString();
+      _amountCtrl.text = e.amount == e.amount.roundToDouble()
+          ? e.amount.toInt().toString()
+          : e.amount.toString();
       _type = e.type;
       _category = e.category;
       _method = e.method;
       _notesCtrl.text = e.notes;
       final parts = e.date.split('-');
       if (parts.length == 3) {
-        _date = DateTime(int.parse(parts[0]), int.parse(parts[1]), int.parse(parts[2]));
+        _date = DateTime(
+          int.parse(parts[0]),
+          int.parse(parts[1]),
+          int.parse(parts[2]),
+        );
       }
     } else {
-      _ledgerId = widget.preselectedLedgerId ??
+      _ledgerId =
+          widget.preselectedLedgerId ??
           (fin.ledgers.isNotEmpty ? fin.ledgers.first.id : '');
     }
   }
@@ -77,7 +96,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
   }
 
-  List<String> get _categories => _type == 'income' ? _incomeCategories : _expenseCategories;
+  List<String> get _categories =>
+      _type == 'income' ? _incomeCategories : _expenseCategories;
 
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
@@ -138,10 +158,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Hapus transaksi?'),
-        content: const Text('Data ini akan hilang dari buku. Tindakan ini tidak bisa dibatalkan.'),
+        content: const Text(
+          'Data ini akan hilang dari buku. Tindakan ini tidak bisa dibatalkan.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Hapus')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Hapus'),
+          ),
         ],
       ),
     );
@@ -157,16 +185,17 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     if (fin.ledgers.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(_isEdit ? 'Ubah transaksi' : 'Tambah transaksi', style: const TextStyle(fontWeight: FontWeight.w800)),
+          title: Text(
+            _isEdit ? 'Ubah transaksi' : 'Tambah transaksi',
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
         ),
-        body: const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: Text(
-              'Belum ada buku. Buka tab Buku lalu tambah buku baru.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.inkMuted),
-            ),
+        body: Center(
+          child: EmptyHint(
+            text:
+                'Belum ada buku. Buat buku dulu supaya transaksi punya tempat dicatat.',
+            action: 'Buka tab Buku',
+            onAction: () => Navigator.of(context).pop(),
           ),
         ),
       );
@@ -192,13 +221,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'PILIH BUKU',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           DropdownButtonFormField<String>(
-            value: _ledgerId,
+            initialValue: _ledgerId,
             items: [
               for (final l in fin.ledgers)
                 DropdownMenuItem(
@@ -214,9 +243,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'JENIS',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -252,9 +281,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'NOMINAL',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           TextField(
@@ -272,17 +301,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'KATEGORI',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           DropdownButtonFormField<String>(
-            value: _category.isEmpty ? null : _category,
+            initialValue: _category.isEmpty ? null : _category,
             hint: const Text('Pilih kategori'),
             decoration: InputDecoration(errorText: _categoryError),
             items: [
-              for (final c in _categories) DropdownMenuItem(value: c, child: Text(c)),
+              for (final c in _categories)
+                DropdownMenuItem(value: c, child: Text(c)),
             ],
             onChanged: (v) => setState(() {
               _category = v ?? '';
@@ -293,9 +323,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'METODE',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -323,9 +353,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           Text(
             'TANGGAL',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           ListTile(
@@ -336,16 +366,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             ),
             trailing: const Icon(Icons.calendar_today),
             onTap: _pickDate,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             tileColor: AppColors.surfaceGlass,
           ),
           const SizedBox(height: 16),
           Text(
             'CATATAN',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  letterSpacing: 1.1,
-                  fontWeight: FontWeight.w800,
-                ),
+              letterSpacing: 1.1,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(height: 6),
           TextField(
@@ -394,7 +426,7 @@ class _TypeChip extends StatelessWidget {
               '$emoji $label',
               style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: selected ? Colors.white : AppColors.inkPrimary,
+                color: selected ? AppColors.onInk : AppColors.inkPrimary,
               ),
             ),
           ),

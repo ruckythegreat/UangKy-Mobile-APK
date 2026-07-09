@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../utils/open_external_downloads.dart';
 import '../providers/finance_provider.dart';
 import '../services/notification_service.dart';
+import '../theme/app_colors.dart';
 import '../widgets/uangky_logo.dart';
 
 /// Pengaturan: pengingat, reload/reset data, salin JSON, tentang app. Data provider dibaca lewat [read] saat aksi (tanpa [watch] di build).
@@ -49,7 +50,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pengaturan', style: TextStyle(fontWeight: FontWeight.w800)),
+        title: const Text(
+          'Pengaturan',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -72,7 +76,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       await _setReminder(v);
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(v ? 'Pengingat diaktifkan' : 'Pengingat dimatikan')),
+                          SnackBar(
+                            content: Text(
+                              v
+                                  ? 'Pengingat diaktifkan'
+                                  : 'Pengingat dimatikan',
+                            ),
+                          ),
                         );
                       }
                     }
@@ -101,10 +111,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context: context,
                 builder: (ctx) => AlertDialog(
                   title: const Text('Reset ke demo?'),
-                  content: const Text('Data yang tersimpan akan diganti contoh bawaan.'),
+                  content: const Text(
+                    'Data yang tersimpan akan diganti contoh bawaan.',
+                  ),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
-                    FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Ya')),
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: const Text('Batal'),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.pop(ctx, true),
+                      child: const Text('Ya'),
+                    ),
                   ],
                 ),
               );
@@ -126,7 +144,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               final fin = context.read<FinanceProvider>();
               final payload = {
                 'ledgers': fin.ledgers.map((e) => e.toJson()).toList(),
-                'transactions': fin.transactions.map((e) => e.toJson()).toList(),
+                'transactions': fin.transactions
+                    .map((e) => e.toJson())
+                    .toList(),
                 'schedules': fin.schedules.map((e) => e.toJson()).toList(),
               };
               final text = const JsonEncoder.withIndent('  ').convert(payload);
@@ -145,9 +165,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context: context,
                 builder: (ctx) => AlertDialog(
                   title: const Text('Hapus semua?'),
-                  content: const Text('Semua buku, transaksi, dan jadwal di perangkat ini akan dihapus.'),
+                  content: const Text(
+                    'Semua buku, transaksi, dan jadwal di perangkat ini akan dihapus.',
+                  ),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Batal')),
+                    TextButton(
+                      onPressed: () => Navigator.pop(ctx, false),
+                      child: const Text('Batal'),
+                    ),
                     FilledButton(
                       onPressed: () => Navigator.pop(ctx, true),
                       child: const Text('Hapus'),
@@ -180,21 +205,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Center(
-                    child: UangkyLogo(variant: UangkyLogoVariant.transparent, size: 72),
+                    child: UangkyLogo(
+                      variant: UangkyLogoVariant.transparent,
+                      size: 72,
+                    ),
                   ),
                   const SizedBox(height: 14),
                   Text(
                     'Tentang UangKy',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Data disimpan lokal di perangkat (SharedPreferences). '
                     'Tidak ada server cloud bawaan — cocok untuk privasi ringkas di APK Android.',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.black54, height: 1.4),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.inkMuted,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  Text('Versi 1.0.0', style: Theme.of(context).textTheme.labelSmall),
+                  Text(
+                    'Versi 1.0.0',
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                 ],
               ),
             ),
